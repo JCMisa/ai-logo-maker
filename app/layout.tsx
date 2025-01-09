@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
+import Provider from "./provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const robotoCondenced = Roboto_Condensed({
   subsets: ["latin"],
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "MeowGic",
   description: "Unleash the Meowgic in Your Brand",
@@ -27,10 +21,8 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/logo.svg" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${robotoCondenced.className} antialiased`}>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
