@@ -1,3 +1,4 @@
+import { parseStringify } from "@/lib/utils";
 import { chatSession } from "@/utils/GeminiModel";
 import { NextResponse } from "next/server";
 
@@ -8,6 +9,11 @@ export async function POST(req: Request) {
     const result = await chatSession.sendMessage(prompt);
     return NextResponse.json(JSON.parse(result.response.text()));
   } catch (e) {
-    return NextResponse.json({ error: e });
+    handleError(e);
   }
 }
+
+const handleError = (error: unknown) => {
+  console.log("Internal error: ", error);
+  return parseStringify({ data: null });
+};

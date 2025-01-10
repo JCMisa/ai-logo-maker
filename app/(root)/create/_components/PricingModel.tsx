@@ -5,7 +5,7 @@ import { lookup } from "../../_data/Lookup";
 import HeadingDescription from "./HeadingDescription";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface PROPS {
   formData: FormDataType;
@@ -19,7 +19,7 @@ type PricingType = {
 };
 
 const PricingModel = ({ formData }: PROPS) => {
-  const user = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (formData?.title && typeof window !== "undefined") {
@@ -56,13 +56,14 @@ const PricingModel = ({ formData }: PROPS) => {
               ))}
             </div>
 
-            {user ? (
-              <Button className="absolute bottom-5">{pricing.button}</Button>
-            ) : (
-              <SignInButton mode="modal">
-                <Button className="absolute bottom-5">{pricing.button}</Button>
-              </SignInButton>
-            )}
+            <Button
+              className="absolute bottom-5"
+              onClick={() =>
+                router.push(`/generate-logo?type=${pricing.title}`)
+              }
+            >
+              {pricing.button}
+            </Button>
           </div>
         ))}
       </div>

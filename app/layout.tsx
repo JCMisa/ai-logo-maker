@@ -4,6 +4,7 @@ import "./globals.css";
 import Provider from "./provider";
 import { dark } from "@clerk/themes";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 const robotoSlab = Roboto_Serif({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default function RootLayout({
         </head>
         <body className={`${robotoSlab.className} antialiased`}>
           <Provider>{children}</Provider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

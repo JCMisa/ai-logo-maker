@@ -76,7 +76,10 @@ const CreateLogo = () => {
           </Button>
         )}
 
-        <Button onClick={() => setStep((prev) => prev + 1)}>
+        <Button
+          onClick={() => setStep((prev) => prev + 1)}
+          disabled={step >= 6}
+        >
           <ArrowRight /> Continue
         </Button>
       </div>
