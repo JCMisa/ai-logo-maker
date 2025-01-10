@@ -24,7 +24,7 @@ export const lookup = {
   pricingOption: [
     {
       title: "Free",
-      icon: "/free.png", // Add your free plan icon here
+      icon: "/free.webp", // Add your free plan icon here
       features: [
         "⚫ Generate unlimited logos for free",
         "⚫ Longer wait times",
@@ -36,14 +36,14 @@ export const lookup = {
     },
     {
       title: "Premium",
-      icon: "/thunder.png", // Add your premium plan icon here
+      icon: "/premium.webp", // Add your premium plan icon here
       features: [
         "⚫ Generate unlimited logos",
         "⚫ Shorter wait times",
         "⚫ Wait time: Less than 10 seconds",
         "⚫ Only 5 Credits",
       ],
-      button: "Generate Free",
+      button: "Generate with Premium",
     },
   ],
 };

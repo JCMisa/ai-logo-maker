@@ -5,8 +5,11 @@ import { lookup } from "../_data/Lookup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 const Hero = () => {
+  const { isSignedIn } = useUser();
+
   const [logoTitle, setLogoTitle] = useState<string>("");
 
   return (
@@ -24,9 +27,15 @@ const Hero = () => {
           placeholder={lookup.InputTitlePlaceholder}
           onChange={(e) => setLogoTitle(e.target.value)}
         />
-        <Link href={`/create?title=${logoTitle}`} className="w-full">
-          <Button className="w-full">Get Started</Button>
-        </Link>
+        {isSignedIn ? (
+          <Link href={`/create?title=${logoTitle}`} className="w-full">
+            <Button className="w-full">Get Started</Button>
+          </Link>
+        ) : (
+          <Link href={`/sign-in`} className="w-full">
+            <Button className="w-full">Sign in</Button>
+          </Link>
+        )}
       </div>
     </div>
   );
