@@ -1,9 +1,10 @@
-import { chatSession } from "@/utils/GeminiModel";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeadingDescription from "./HeadingDescription";
 import { lookup } from "../../_data/Lookup";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
+import axios from "axios";
+import { prompt } from "../../_data/Prompt";
 
 interface PROPS {
   onHandleInputChange: (e: string) => void;
@@ -19,23 +20,19 @@ const LogoIdea = ({ onHandleInputChange, formData }: PROPS) => {
     try {
       setLoading(true);
 
-      const PROMPT = `
-      Generate 6 logo ideas based on the following user input:
-        - Design: ${formData?.design?.title}
-        - Title: ${formData?.title} 
-        - Description: ${formData?.desc}
-        - based on the design, ${formData?.design?.prompt}
-      The response should be an array of six strings, with each string describing a unique logo design. For example: 
-      ["logo idea 1", "logo idea 2", "logo idea 3", "logo idea 4", "logo idea 5", "logo idea 6"].
-      `;
+      const PROMPT = prompt.DESIGN_IDEA_PROMPT.replace(
+        "{logoType}",
+        formData?.design?.title
+      )
+        .replace("{logoTitle}", formData?.title)
+        .replace("{logoDesc}", formData?.desc)
+        .replace("{logoPrompt}", formData?.design?.prompt);
 
-      const aiResponse = await chatSession.sendMessage(PROMPT);
+      const result = await axios.post("/api/ai-design-ideas", {
+        prompt: PROMPT,
+      });
 
-      if (aiResponse) {
-        const parsedAiResponse = JSON.parse(aiResponse.response.text());
-        console.log("ai response (parsed): ", parsedAiResponse);
-        setIdeas(parsedAiResponse);
-      }
+      setIdeas(result?.data?.ideas);
 
       //todo: store the ai response to the database and display it as options
       //todo: or instead of the generated ai response, we can store only the selected option in the database
@@ -45,6 +42,11 @@ const LogoIdea = ({ onHandleInputChange, formData }: PROPS) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    generateLogoDesignIdea();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="my-10">
@@ -63,22 +65,41 @@ const LogoIdea = ({ onHandleInputChange, formData }: PROPS) => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-        {ideas?.map((idea: string, index: number) => (
-          <div
-            key={index}
+      {loading ? (
+        <div className="flex items-center justify-center">
+          <LoaderCircle className="w-5 h-5 animate-spin" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
+          {ideas &&
+            ideas?.map((idea: string, index: number) => (
+              <div
+                key={index}
+                onClick={() => {
+                  setSelectedOption(idea);
+                  onHandleInputChange(idea);
+                }}
+                className={`p-2 px-3 rounded-full bg-dark-100 border cursor-pointer hover:scale-95 transition-all ${
+                  selectedOption === idea && "border-primary"
+                }`}
+              >
+                <p className="text-sm text-center">{idea}</p>
+              </div>
+            ))}
+          <p
             onClick={() => {
-              setSelectedOption(idea);
-              onHandleInputChange(idea);
+              setSelectedOption("Let AI select the best idea");
+              onHandleInputChange("Let AI select the best idea");
             }}
-            className={`p-3 px-5 rounded-lg bg-dark-100 min-h-32 max-h-32 overflow-auto card-scroll cursor-pointer hover:scale-95 transition-all ${
-              selectedOption === idea && "border border-primary"
-            } `}
+            className={`p-2 px-3 rounded-full bg-dark-100 border cursor-pointer hover:scale-95 transition-all text-sm text-center ${
+              selectedOption === "Let AI select the best idea" &&
+              "border-primary"
+            }`}
           >
-            <p className="text-sm text-center">{idea}</p>
-          </div>
-        ))}
-      </div>
+            Let AI select the best idea
+          </p>
+        </div>
+      )}
     </div>
   );
 };

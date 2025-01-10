@@ -38,7 +38,7 @@ export const chatSession = model.startChat({
       role: "user",
       parts: [
         {
-          text: 'Generate 6 logo ideas based on the following user input:\n        - Design: Cartoon Logo\n        - Title: Cat\n        - Description: Cat logo for coffee business\n        - based on the design, Create a set of vibrant, playful logo designs featuring whimsical characters, bright colors, and fun typography.\n      The response should be an array of six strings, with each string describing a unique logo design. For example: \n      ["logo idea 1", "logo idea 2", "logo idea 3", "logo idea 4", "logo idea 5", "logo idea 6"].',
+          text: "Based on the type of logo: Cartoon Logo, generate a text prompt to create a logo for the brand name Cat, with the description: Cat logo for a coffee business, and referring to the prompt: Create a set of vibrant, playful logo designs featuring whimsical characters, bright colors, and fun typography. Provide 4-5 logo ideas, each consisting of 4-5 words. Return the result in JSON format with an ideas field.",
         },
       ],
     },
@@ -46,7 +46,7 @@ export const chatSession = model.startChat({
       role: "model",
       parts: [
         {
-          text: "```json\n[\n\"A cartoon cat wearing a barista apron, holding a steaming coffee cup, with playful, bubbly font for 'Cat' Coffee.\",\n\"A chubby, smiling cat curled up inside a giant coffee bean, surrounded by coffee beans in warm brown and bright orange colors, with a handwritten-style font for 'Cat'.\",\n\"A cat with oversized sunglasses and a cool hat, sipping coffee through a straw,  featuring a retro-style font for 'Cat Coffee' in bold colors.\",\n\"Three cartoon cats – one black, one orange, one calico – each holding a coffee cup, arranged in a circle around a coffee bean in the center, with a simple, playful sans-serif font for 'Cat'.\",\n\"A cat perched on top of a coffee machine, steam forming a heart shape above it, using a vibrant color palette with a bold, italic font for 'Cat Coffee'.\",\n\"A cat dressed as a superhero with a coffee bean as its emblem, in bright, comic-book style colors, with a dynamic, bold font for 'Cat Coffee' that suggests energy and power.\"\n]\n```\n",
+          text: '```json\n{\n  "prompt": "Create a set of vibrant, playful cartoon logos for a coffee business called \'Cat\'.  The logos should feature whimsical cat characters, bright colors, and fun typography.  Provide 4-5 logo ideas, each described in 4-5 words.",\n  "ideas": [\n    "Happy Cat sipping coffee bean",\n    "Chill cat in coffee cup",\n    "Coffee-loving cat with sunbeams",\n    "Playful cat with coffee spill",\n    "Grumpy cat enjoying espresso"\n  ]\n}\n```\n',
         },
       ],
     },
