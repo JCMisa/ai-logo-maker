@@ -26,23 +26,18 @@ export const lookup = {
       title: "Free",
       icon: "/free.webp", // Add your free plan icon here
       features: [
-        "⚫ Generate unlimited logos for free",
+        "⚫ Generate 5 logos for free",
         "⚫ Longer wait times",
         "⚫ Wait time: 30 seconds to 3 minutes",
         "⚫ Limited Design Options and Quality",
-        "⚫ Slow (Not Recommended)",
+        "⚫ Slow Image Generation",
       ],
       button: "Generate Free",
     },
     {
       title: "Premium",
       icon: "/premium.webp", // Add your premium plan icon here
-      features: [
-        "⚫ Generate unlimited logos",
-        "⚫ Shorter wait times",
-        "⚫ Wait time: Less than 10 seconds",
-        "⚫ Only 5 Credits",
-      ],
+      features: ["⚫ Generate unlimited logos", "⚫ Shorter wait times"],
       button: "Generate with Premium",
     },
   ],

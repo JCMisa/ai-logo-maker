@@ -52,3 +52,25 @@ export const chatSession = model.startChat({
     },
   ],
 });
+
+export const aiLogoPrompt = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "generate ai logo prompt:  Generate a text prompt to create a logo for the brand name: cat. The logo should have a description: cat logo for coffee business, and use the color combination of Summer Vibes. Additionally, incorporate the following idea: Cat inside coffee cup, and design concept: Cartoon Logo. Refer to this logo prompt: Create a set of vibrant, playful logo designs featuring whimsical characters, bright colors, and fun typography. Provide the result in a JSON format with the prompt field only.",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: "```json\n{\n  \"prompt\": \"Create a cartoon logo for a coffee business called 'CAT'. The logo should feature a cat inside a coffee cup.  Use a 'Summer Vibes' color palette.  The design should be vibrant, playful, and whimsical. Think bright colors and fun typography.\"\n}\n```\n",
+        },
+      ],
+    },
+  ],
+});

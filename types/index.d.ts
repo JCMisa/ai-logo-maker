@@ -20,3 +20,12 @@ declare type FormDataType = {
   };
   idea: string;
 };
+
+declare type UserType = {
+  id: number;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  credits: number;
+};

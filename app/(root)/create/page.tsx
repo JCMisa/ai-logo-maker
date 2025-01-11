@@ -17,11 +17,11 @@ const CreateLogo = () => {
     desc: "",
     palette: "",
     design: {
-      image: "string",
-      prompt: "string",
-      title: "string",
+      image: "",
+      prompt: "",
+      title: "",
     },
-    idea: "string",
+    idea: "",
   });
 
   const onHandleInputChange = (
