@@ -21,6 +21,7 @@ const CreateLogo = () => {
     email: "",
     credits: 0,
     isPremium: false,
+    paymentIntentId: "",
   });
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormDataType>({

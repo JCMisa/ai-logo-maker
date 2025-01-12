@@ -10,6 +10,7 @@ const Credits = () => {
     email: "",
     credits: 0,
     isPremium: false,
+    paymentIntentId: "",
   });
 
   useEffect(() => {

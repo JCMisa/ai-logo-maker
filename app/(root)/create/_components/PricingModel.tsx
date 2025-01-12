@@ -16,6 +16,7 @@ type PricingType = {
   icon: string;
   features: string[];
   button: string;
+  buttonLink: string;
 };
 
 const PricingModel = ({ formData }: PROPS) => {
@@ -56,14 +57,25 @@ const PricingModel = ({ formData }: PROPS) => {
               ))}
             </div>
 
-            <Button
-              className="absolute bottom-5"
-              onClick={() =>
-                router.push(`/generate-logo?type=${pricing.title}`)
-              }
-            >
-              {pricing.button}
-            </Button>
+            {pricing.title === "Free" ? (
+              <Button
+                className="absolute bottom-5"
+                onClick={() =>
+                  router.push(`/generate-logo?type=${pricing.title}`)
+                }
+              >
+                {pricing.button}
+              </Button>
+            ) : (
+              <Button
+                className="absolute bottom-5"
+                onClick={() =>
+                  router.push(`${pricing.buttonLink}?type=${pricing.title}`)
+                }
+              >
+                {pricing.button}
+              </Button>
+            )}
           </div>
         ))}
       </div>

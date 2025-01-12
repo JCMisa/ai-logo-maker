@@ -29,4 +29,5 @@ declare type UserType = {
   email: string;
   credits: number;
   isPremium: boolean;
+  paymentIntentId: string;
 };

@@ -33,12 +33,14 @@ export const lookup = {
         "⚫ Slow Image Generation",
       ],
       button: "Generate Free",
+      buttonLink: "/generate-logo",
     },
     {
       title: "Premium",
       icon: "/premium.webp", // Add your premium plan icon here
       features: ["⚫ Generate unlimited logos", "⚫ Shorter wait times"],
       button: "Generate with Premium",
+      buttonLink: "/upgrade",
     },
   ],
 };

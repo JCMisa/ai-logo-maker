@@ -5,10 +5,11 @@ import React, { useEffect, useState } from "react";
 import { prompt } from "../_data/Prompt";
 import axios from "axios";
 import Image from "next/image";
-import { LoaderCircle } from "lucide-react";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const GenerateLogoPage = () => {
   const [currentUser, setCurrentUser] = useState<UserType>({
@@ -19,6 +20,7 @@ const GenerateLogoPage = () => {
     email: "",
     credits: 0,
     isPremium: false,
+    paymentIntentId: "",
   });
   const [formData, setFormData] = useState<FormDataType>({
     title: "",
@@ -92,6 +94,7 @@ const GenerateLogoPage = () => {
             Logo saved successfully
           </p>
         );
+        localStorage.removeItem("formData");
       }
     } catch (error) {
       console.log("generate logo error: ", error);
@@ -102,19 +105,21 @@ const GenerateLogoPage = () => {
       );
     } finally {
       setLoading(false);
-      localStorage.removeItem("formData");
     }
   };
 
-  // useEffect(() => {
-  //   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  //   currentUser && generateAiLogo();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [formData?.title, formData?.desc, currentUser]);
-
   return (
     <div>
-      <Button onClick={() => generateAiLogo()}>Generate</Button>
+      <div className="flex items-center gap-5 mb-5">
+        <Link
+          href={"/"}
+          className="flex items-center gap-2 text-gray-400 cursor-pointer hover:scale-95"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <p className="text-sm">Back to Home</p>
+        </Link>
+        <Button onClick={() => generateAiLogo()}>Generate</Button>
+      </div>
       {!loading && logoImage ? (
         <Image
           src={logoImage ? logoImage : "/empty-img.jpg"}

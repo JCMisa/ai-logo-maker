@@ -15,3 +15,7 @@ export const formatCurrency = (price: number) => {
     currency: "PHP",
   }).format(price);
 };
+
+export function convertToSubcurrency(amount: number, factor = 100) {
+  return Math.round(amount * factor);
+}

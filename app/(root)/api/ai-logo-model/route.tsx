@@ -43,10 +43,9 @@ export async function POST(req: Request) {
       await setDoc(doc(db, "logos", Date.now().toString()), data);
 
       // update the user credits
-      const creditsRef = doc(db, "users", owner);
       const userRef = doc(db, "users", owner);
       const userSnap = await getDoc(userRef);
-      await updateDoc(creditsRef, {
+      await updateDoc(userRef, {
         credits: userSnap.exists() && userSnap.data().credits - 1,
       });
     } catch (e) {

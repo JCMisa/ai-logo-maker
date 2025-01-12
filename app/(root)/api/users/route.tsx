@@ -19,6 +19,8 @@ export async function POST(req: Request) {
         lastName: lastName,
         email: email,
         credits: 5,
+        isPremium: false,
+        paymentIntentId: "",
       };
 
       await setDoc(doc(db, "users", email), { ...data });

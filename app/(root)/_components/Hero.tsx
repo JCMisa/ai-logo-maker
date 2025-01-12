@@ -17,6 +17,7 @@ const Hero = () => {
     email: "",
     credits: 0,
     isPremium: false,
+    paymentIntentId: "",
   });
   const [logoTitle, setLogoTitle] = useState<string>("");
 
@@ -45,9 +46,8 @@ const Hero = () => {
           onChange={(e) => setLogoTitle(e.target.value)}
         />
         <SignedIn>
-          {(currentUser?.isPremium && currentUser?.credits <= 5) ||
-          (currentUser?.isPremium === false && currentUser?.credits <= 5) ||
-          (currentUser?.isPremium && currentUser?.credits > 5) ? (
+          {(currentUser?.isPremium && currentUser?.credits != 0) ||
+          (currentUser?.isPremium === false && currentUser?.credits != 0) ? (
             <Link href={`/create?title=${logoTitle}`} className="w-full">
               <Button className="w-full">Get Started</Button>
             </Link>
