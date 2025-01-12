@@ -28,4 +28,5 @@ declare type UserType = {
   lastName: string;
   email: string;
   credits: number;
+  isPremium: boolean;
 };

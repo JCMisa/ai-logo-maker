@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LogoTitle from "./_components/LogoTitle";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -9,8 +9,19 @@ import LogoColorPalette from "./_components/LogoColorPalette";
 import LogoDesigns from "./_components/LogoDesigns";
 import LogoIdea from "./_components/LogoIdea";
 import PricingModel from "./_components/PricingModel";
+import { getCurrentUser } from "@/services/user";
+import ContinuePremium from "./_components/ContinuePremium";
 
 const CreateLogo = () => {
+  const [currentUser, setCurrentUser] = useState<UserType>({
+    id: 0,
+    userId: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    credits: 0,
+    isPremium: false,
+  });
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormDataType>({
     title: "",
@@ -23,6 +34,15 @@ const CreateLogo = () => {
     },
     idea: "",
   });
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user?.data);
+    };
+
+    getUser();
+  }, []);
 
   const onHandleInputChange = (
     field: string,
@@ -63,7 +83,11 @@ const CreateLogo = () => {
           formData={formData}
         />
       ) : step === 6 ? (
-        <PricingModel formData={formData} />
+        currentUser?.isPremium ? (
+          <ContinuePremium formData={formData} />
+        ) : (
+          <PricingModel formData={formData} />
+        )
       ) : null}
 
       <div className="flex items-center justify-between">

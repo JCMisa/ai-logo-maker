@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Hero from "./(root)/_components/Hero";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import Credits from "./(root)/_components/Credits";
+import { LoaderCircle } from "lucide-react";
 
 export default function Home() {
   const { user } = useUser();
@@ -29,6 +31,9 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <Suspense fallback={<LoaderCircle className="w-5 h-5 animate-spin" />}>
+        <Credits />
+      </Suspense>
     </div>
   );
 }

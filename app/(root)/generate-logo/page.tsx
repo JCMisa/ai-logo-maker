@@ -8,6 +8,7 @@ import Image from "next/image";
 import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const GenerateLogoPage = () => {
   const [currentUser, setCurrentUser] = useState<UserType>({
@@ -17,6 +18,7 @@ const GenerateLogoPage = () => {
     lastName: "",
     email: "",
     credits: 0,
+    isPremium: false,
   });
   const [formData, setFormData] = useState<FormDataType>({
     title: "",
@@ -85,11 +87,22 @@ const GenerateLogoPage = () => {
       if (result?.data?.image !== null) {
         console.log("ai generated logo response: ", result?.data);
         setLogoImage(result?.data?.image);
+        toast(
+          <p className="text-sm font-bold text-green-500">
+            Logo saved successfully
+          </p>
+        );
       }
     } catch (error) {
       console.log("generate logo error: ", error);
+      toast(
+        <p className="text-sm font-bold text-red-500">
+          Internal error occured while generating the logo
+        </p>
+      );
     } finally {
       setLoading(false);
+      localStorage.removeItem("formData");
     }
   };
 
