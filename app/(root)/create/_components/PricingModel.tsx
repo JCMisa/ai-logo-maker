@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { lookup } from "../../_data/Lookup";
 import HeadingDescription from "./HeadingDescription";
 import Image from "next/image";
@@ -21,10 +21,12 @@ type PricingType = {
 
 const PricingModel = ({ formData }: PROPS) => {
   const router = useRouter();
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     if (formData?.title && typeof window !== "undefined") {
       localStorage.setItem("formData", JSON.stringify(formData));
+      setIsDisabled(false);
     }
   }, [formData]);
 
@@ -63,15 +65,14 @@ const PricingModel = ({ formData }: PROPS) => {
                 onClick={() =>
                   router.push(`/generate-logo?type=${pricing.title}`)
                 }
+                disabled={isDisabled}
               >
                 {pricing.button}
               </Button>
             ) : (
               <Button
                 className="absolute bottom-5"
-                onClick={() =>
-                  router.push(`${pricing.buttonLink}?type=${pricing.title}`)
-                }
+                onClick={() => router.push(`/upgrade`)}
               >
                 {pricing.button}
               </Button>

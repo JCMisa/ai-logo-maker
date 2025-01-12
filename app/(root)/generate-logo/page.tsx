@@ -5,11 +5,12 @@ import React, { useEffect, useState } from "react";
 import { prompt } from "../_data/Prompt";
 import axios from "axios";
 import Image from "next/image";
-import { ArrowLeft, LoaderCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
+import LogoLoading from "@/components/custom/LogoLoading";
 
 const GenerateLogoPage = () => {
   const [currentUser, setCurrentUser] = useState<UserType>({
@@ -109,28 +110,48 @@ const GenerateLogoPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex items-center gap-5 mb-5">
-        <Link
-          href={"/"}
-          className="flex items-center gap-2 text-gray-400 cursor-pointer hover:scale-95"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <p className="text-sm">Back to Home</p>
-        </Link>
-        <Button onClick={() => generateAiLogo()}>Generate</Button>
+    <div className="my-10">
+      <Link
+        href={"/"}
+        className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-gray-500 transition-all"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <p className="text-sm">Back to Home</p>
+      </Link>
+
+      <div className="mt-20 flex items-center justify-center">
+        {!loading && logoImage ? (
+          <Image
+            src={logoImage ? logoImage : "/empty-img.jpg"}
+            alt="logo"
+            width={1000}
+            height={1000}
+            className="w-80 h-72 rounded-lg"
+          />
+        ) : (
+          <LogoLoading />
+        )}
       </div>
-      {!loading && logoImage ? (
-        <Image
-          src={logoImage ? logoImage : "/empty-img.jpg"}
-          alt="logo"
-          width={1000}
-          height={1000}
-          className="w-52 h-52"
-        />
-      ) : (
-        <LoaderCircle className="animate-spin w-5 h-5" />
-      )}
+
+      <div className="mt-32 flex flex-col gap-4 items-center justify-center w-full">
+        <Button
+          className="w-[50%]"
+          onClick={() => generateAiLogo()}
+          disabled={loading}
+        >
+          Generate
+        </Button>
+
+        <div className="flex flex-col">
+          <h2 className="text-4xl font-bold text-center">
+            Generate a Logo in One Click
+          </h2>
+          <p className="text-lg text-gray-300 text-center">
+            Click the generate button above and see the{" "}
+            <span className="logo-text font-bold">MeowGic</span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -31,3 +31,11 @@ declare type UserType = {
   isPremium: boolean;
   paymentIntentId: string;
 };
+
+declare type LogoType = {
+  id: number;
+  desc: string;
+  image: string;
+  owner: string;
+  title: string;
+};

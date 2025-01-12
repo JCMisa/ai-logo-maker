@@ -55,7 +55,9 @@ const Header = () => {
               </span>
             </div>
           </div>
-          <Button>Dashboard</Button>
+          <Link href={"/dashboard"}>
+            <Button>Dashboard</Button>
+          </Link>
         </div>
       ) : (
         <Link href={"/sign-in"}>

@@ -3,7 +3,15 @@
 import { parseStringify } from "@/lib/utils";
 import { db } from "@/utils/FirebaseConfig";
 import { currentUser } from "@clerk/nextjs/server";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
 export const getCurrentUser = async () => {
   try {
@@ -47,6 +55,24 @@ export const updateUserSubscription = async (
       });
       return parseStringify({ data: "user subscribed successfully" });
     }
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getUserLogos = async (owner: string) => {
+  try {
+    const q = query(collection(db, "logos"), where("owner", "==", owner));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.size === 0) {
+      return parseStringify({ data: null });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const userLogos: any[] = [];
+    querySnapshot.forEach((doc) => {
+      userLogos.push(doc.data());
+    });
+    return parseStringify({ data: userLogos });
   } catch (error) {
     handleError(error);
   }
