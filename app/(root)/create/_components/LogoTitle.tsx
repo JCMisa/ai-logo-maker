@@ -1,21 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import HeadingDescription from "./HeadingDescription";
 import { lookup } from "../../_data/Lookup";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "next/navigation";
+import { LoaderCircle } from "lucide-react";
 
 interface PROPS {
   onHandleInputChange: (e: string) => void;
 }
 
-const LogoTitle = ({ onHandleInputChange }: PROPS) => {
+const LogoTitleContent = ({ onHandleInputChange }: PROPS) => {
   const searchParams = useSearchParams();
-
-  // const [title, setTitle] = useState<string>(
-  //   (searchParams.get("title") as string) ?? ""
-  // );
 
   const title: string = (searchParams.get("title") as string) ?? "";
 
@@ -39,5 +36,17 @@ const LogoTitle = ({ onHandleInputChange }: PROPS) => {
     </div>
   );
 };
+
+const LogoTitle = (props: PROPS) => (
+  <Suspense
+    fallback={
+      <div>
+        <LoaderCircle className="w-5 h-5 animate-spin" />
+      </div>
+    }
+  >
+    <LogoTitleContent {...props} />
+  </Suspense>
+);
 
 export default LogoTitle;
