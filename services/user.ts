@@ -5,6 +5,7 @@ import { db } from "@/utils/FirebaseConfig";
 import { currentUser } from "@clerk/nextjs/server";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -75,6 +76,26 @@ export const getUserLogos = async (owner: string) => {
     return parseStringify({ data: userLogos });
   } catch (error) {
     handleError(error);
+  }
+};
+
+export const deleteUserLogo = async (logoId: string) => {
+  try {
+    const docRef = doc(db, "logos", logoId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return parseStringify({
+        data: "failure",
+        error: "Document does not exist",
+      });
+    }
+
+    await deleteDoc(docRef);
+    return parseStringify({ data: "success" });
+  } catch (error) {
+    handleError(error);
+    return parseStringify({ data: "failure", error: error });
   }
 };
 

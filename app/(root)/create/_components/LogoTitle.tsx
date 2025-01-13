@@ -32,6 +32,10 @@ const LogoTitle = ({ onHandleInputChange }: PROPS) => {
         onChange={(e) => onHandleInputChange(e.target.value)}
         placeholder={lookup.InputTitlePlaceholder}
       />
+      <span className="text-xs text-gray-400">
+        Do not provide a title if you don&apos;t want a text to appear in your
+        logo.
+      </span>
     </div>
   );
 };

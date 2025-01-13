@@ -33,7 +33,8 @@ declare type UserType = {
 };
 
 declare type LogoType = {
-  id: number;
+  id: string;
+  logoId: string;
   desc: string;
   image: string;
   owner: string;

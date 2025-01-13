@@ -1,32 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/services/user";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Header = () => {
-  const [currentUser, setCurrentUser] = useState<UserType>({
-    id: 0,
-    userId: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    credits: 0,
-    isPremium: false,
-    paymentIntentId: "",
-  });
-
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getCurrentUser();
-      setCurrentUser(user?.data);
-    };
-
-    getUser();
-  }, []);
+  const { user } = useUser();
 
   return (
     <div className="px-10 lg:px-32 xl:px-48 2xl:px-56 p-4 flex justify-between items-center shadow-lg">
@@ -42,16 +23,14 @@ const Header = () => {
           MeowGic
         </h2>
       </Link>
-      {currentUser ? (
+      {user ? (
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-2">
             <UserButton />
             <div className="flex flex-col items-start">
-              <p className="text-sm">
-                {currentUser?.firstName} {currentUser?.lastName}
-              </p>
+              <p className="text-sm">{user?.fullName}</p>
               <span className="text-xs text-gray-400">
-                {currentUser?.email}
+                {user?.primaryEmailAddress?.emailAddress}
               </span>
             </div>
           </div>

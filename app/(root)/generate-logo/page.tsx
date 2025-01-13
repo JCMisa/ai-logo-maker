@@ -1,6 +1,5 @@
 "use client";
 
-import { getCurrentUser } from "@/services/user";
 import React, { useEffect, useState } from "react";
 import { prompt } from "../_data/Prompt";
 import axios from "axios";
@@ -11,18 +10,11 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import LogoLoading from "@/components/custom/LogoLoading";
+import { useUser } from "@clerk/nextjs";
 
 const GenerateLogoPage = () => {
-  const [currentUser, setCurrentUser] = useState<UserType>({
-    id: 0,
-    userId: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    credits: 0,
-    isPremium: false,
-    paymentIntentId: "",
-  });
+  const { user } = useUser();
+
   const [formData, setFormData] = useState<FormDataType>({
     title: "",
     desc: "",
@@ -42,24 +34,13 @@ const GenerateLogoPage = () => {
   console.log("mode: ", mode);
 
   useEffect(() => {
-    const getUser = async () => {
-      const user = await getCurrentUser();
-      setCurrentUser(user?.data);
-    };
-
     if (typeof window !== undefined) {
       const storage = localStorage.getItem("formData");
       if (storage) {
         setFormData(JSON.parse(storage));
       }
     }
-
-    getUser();
   }, []);
-
-  useEffect(() => {
-    console.log("current user info: ", currentUser?.email);
-  }, [currentUser]);
 
   const generateAiLogo = async () => {
     try {
@@ -72,30 +53,31 @@ const GenerateLogoPage = () => {
         .replace("{logoDesign}", formData?.design?.title)
         .replace("{logoPrompt}", formData?.design?.prompt);
 
-      console.log(
-        "check info: ",
-        currentUser?.email,
-        formData?.title,
-        formData?.desc
-      );
+      if (user) {
+        // generate logo from gemini to hugging face
+        const result = await axios.post("/api/ai-logo-model", {
+          prompt: PROMPT,
+          owner: user?.primaryEmailAddress?.emailAddress,
+          title: formData?.title,
+          desc: formData?.desc,
+        });
 
-      // generate logo from gemini to hugging face
-      const result = await axios.post("/api/ai-logo-model", {
-        prompt: PROMPT,
-        owner: currentUser?.email,
-        title: formData?.title,
-        desc: formData?.desc,
-      });
-
-      if (result?.data?.image !== null) {
-        console.log("ai generated logo response: ", result?.data);
-        setLogoImage(result?.data?.image);
+        if (result?.data?.image !== null) {
+          console.log("ai generated logo response: ", result?.data);
+          setLogoImage(result?.data?.image);
+          toast(
+            <p className="text-sm font-bold text-green-500">
+              Logo saved successfully
+            </p>
+          );
+          localStorage.removeItem("formData");
+        }
+      } else {
         toast(
-          <p className="text-sm font-bold text-green-500">
-            Logo saved successfully
+          <p className="text-sm font-bold text-red-500">
+            Failed to generate, please try again
           </p>
         );
-        localStorage.removeItem("formData");
       }
     } catch (error) {
       console.log("generate logo error: ", error);

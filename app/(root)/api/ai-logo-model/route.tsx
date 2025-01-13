@@ -3,6 +3,7 @@ import { aiLogoPrompt } from "@/utils/GeminiModel";
 import axios from "axios";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
+import uuid4 from "uuid4";
 
 export async function POST(req: Request) {
   const { prompt, owner, title, desc } = await req.json();
@@ -31,7 +32,9 @@ export async function POST(req: Request) {
     const base64Image = buffer.toString("base64");
     const base64ImageWithMime = `data:image/png;base64,${base64Image}`;
 
+    const logoId = uuid4();
     const data = {
+      logoId: logoId,
       image: base64ImageWithMime,
       owner: owner,
       title: title,
@@ -40,7 +43,7 @@ export async function POST(req: Request) {
 
     try {
       // save logo to logos table with image and owner email, title, and description
-      await setDoc(doc(db, "logos", Date.now().toString()), data);
+      await setDoc(doc(db, "logos", logoId), data);
 
       // update the user credits
       const userRef = doc(db, "users", owner);

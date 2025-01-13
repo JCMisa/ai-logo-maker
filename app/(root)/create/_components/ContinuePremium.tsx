@@ -13,7 +13,7 @@ const ContinuePremium = ({ formData }: PROPS) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    if (formData?.title && typeof window !== "undefined") {
+    if (formData && typeof window !== "undefined") {
       localStorage.setItem("formData", JSON.stringify(formData));
       setIsDisabled(false);
     }
@@ -26,13 +26,19 @@ const ContinuePremium = ({ formData }: PROPS) => {
         description="Generate your logo with ease."
       />
 
-      <div className="mt-5 flex items-center justify-center">
+      <div className="mt-5 flex flex-col gap-4 items-center justify-center">
         <Button
           onClick={() => router.push(`/generate-logo?type=Premium`)}
           disabled={isDisabled}
         >
           Generate Logo
         </Button>
+        {isDisabled && (
+          <p className="text-gray-400 text-center text-xs">
+            Make sure that you provided enough information about the logo you
+            want to create.
+          </p>
+        )}
       </div>
     </div>
   );

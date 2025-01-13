@@ -24,7 +24,7 @@ const PricingModel = ({ formData }: PROPS) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    if (formData?.title && typeof window !== "undefined") {
+    if (formData && typeof window !== "undefined") {
       localStorage.setItem("formData", JSON.stringify(formData));
       setIsDisabled(false);
     }
