@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "app/api/ai-logo-model/route.tsx": {
+      "maxDuration": 10
+    }
+  }
+}
