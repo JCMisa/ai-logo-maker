@@ -103,7 +103,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `localhost:3000/payment-success?amount=${amount}`, // update this once hosted
+        return_url: `https://meowgic.vercel.app/payment-success?amount=${amount}`, // update this once hosted
       },
     });
 
