@@ -57,20 +57,38 @@ const GenerateLogoPageContent = () => {
         // generate logo from gemini to hugging face
         const result = await axios.post("/api/ai-logo-model", {
           prompt: PROMPT,
-          owner: user?.primaryEmailAddress?.emailAddress,
-          title: formData?.title,
-          desc: formData?.desc,
         });
 
         if (result?.data?.image !== null) {
           console.log("ai generated logo response: ", result?.data);
-          setLogoImage(result?.data?.image);
           toast(
             <p className="text-sm font-bold text-green-500">
-              Logo saved successfully
+              Image generated successfully
             </p>
           );
-          localStorage.removeItem("formData");
+          setLogoImage(result?.data?.image);
+          // save the data of logo to the database and update the user credits
+          const logoToDb = await axios.post("/api/logos", {
+            image: result?.data?.image,
+            title: formData?.title,
+            desc: formData?.desc,
+            owner: user?.primaryEmailAddress?.emailAddress,
+          });
+
+          if (logoToDb?.data === "success") {
+            // update the user credits
+            const updateCredits = await axios.post("/api/credits", {
+              owner: user.primaryEmailAddress?.emailAddress,
+            });
+
+            if (updateCredits?.data === "success") {
+              toast(
+                <p className="text-sm font-bold text-green-500">
+                  Logo saved successfully
+                </p>
+              );
+            }
+          }
         }
       } else {
         toast(
@@ -87,6 +105,7 @@ const GenerateLogoPageContent = () => {
         </p>
       );
     } finally {
+      localStorage.removeItem("formData");
       setLoading(false);
     }
   };
