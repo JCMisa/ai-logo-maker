@@ -43,9 +43,16 @@ const Info = () => {
 
       <div className="flex justify-between items-center mt-6">
         <h2 className="font-bold text-2xl">Dashboard</h2>
-        <Link href={"/create"}>
-          <Button>+ Create New Logo</Button>
-        </Link>
+        {(currentUser?.isPremium && currentUser?.credits != 0) ||
+        (currentUser?.isPremium === false && currentUser?.credits != 0) ? (
+          <Link href={"/create"}>
+            <Button>+ Create New Logo</Button>
+          </Link>
+        ) : (
+          <Link href={"/upgrade"}>
+            <Button>Upgrade Plan</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

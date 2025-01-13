@@ -132,6 +132,9 @@ const GenerateLogoPageContent = () => {
             Click the generate button above and see the{" "}
             <span className="logo-text font-bold">MeowGic</span>
           </p>
+          <span className="text-center text-xs text-gray-400">
+            Maximum waiting time: 4 - 5 minutes
+          </span>
         </div>
       </div>
     </div>
