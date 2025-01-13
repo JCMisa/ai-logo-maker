@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { prompt } from "../_data/Prompt";
 import axios from "axios";
 import Image from "next/image";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import LogoLoading from "@/components/custom/LogoLoading";
 import { useUser } from "@clerk/nextjs";
 
-const GenerateLogoPage = () => {
+const GenerateLogoPageContent = () => {
   const { user } = useUser();
 
   const [formData, setFormData] = useState<FormDataType>({
@@ -137,5 +137,17 @@ const GenerateLogoPage = () => {
     </div>
   );
 };
+
+const GenerateLogoPage = () => (
+  <Suspense
+    fallback={
+      <div>
+        <LoaderCircle className="w-5 h-5 animate-spin" />
+      </div>
+    }
+  >
+    <GenerateLogoPageContent />
+  </Suspense>
+);
 
 export default GenerateLogoPage;
