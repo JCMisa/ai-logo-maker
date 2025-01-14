@@ -1,3 +1,5 @@
+export const maxDuration = 60;
+
 import { aiLogoPrompt } from "@/utils/GeminiModel";
 import axios from "axios";
 import { NextResponse } from "next/server";
